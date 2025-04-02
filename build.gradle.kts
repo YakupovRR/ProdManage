@@ -30,6 +30,9 @@ dependencies {
 
     // Database
     implementation("org.postgresql:postgresql")
+     implementation("org.flywaydb:flyway-core:10.21.0")
+
+     // implementation("org.liquibase:liquibase-core:4.31.1")
 
     // Kafka
     implementation("org.springframework.kafka:spring-kafka")
