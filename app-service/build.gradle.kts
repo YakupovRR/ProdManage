@@ -32,7 +32,7 @@ dependencies {
 
     // Database
     implementation("org.postgresql:postgresql")
-    implementation("org.liquibase:liquibase-core:4.31.1")
+    implementation("org.liquibase:liquibase-core")
 
     // Kafka
     implementation("org.springframework.kafka:spring-kafka")
