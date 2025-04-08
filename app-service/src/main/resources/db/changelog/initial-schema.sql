@@ -4,11 +4,6 @@ CREATE TABLE departments
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE task_statues (
-                              id SERIAL PRIMARY KEY,
-                              name VARCHAR(100)
-);
-
 CREATE TABLE users
 (
     id            SERIAL PRIMARY KEY,
@@ -40,7 +35,7 @@ CREATE TABLE tasks
     start_data TIMESTAMP,
     deadline TIMESTAMP,
     completion_date TIMESTAMP,
-    status_id INT REFERENCES task_statues(id),
+    status VARCHAR(100),
     creator_id INT REFERENCES users(id),
     executor_id INT REFERENCES users(id),
     parent_task_id INT REFERENCES tasks(id),

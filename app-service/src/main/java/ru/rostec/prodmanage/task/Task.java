@@ -3,6 +3,8 @@ package ru.rostec.prodmanage.task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import ru.rostec.prodmanage.department.Department;
+import ru.rostec.prodmanage.user.User;
 
 import java.time.LocalDateTime;
 
@@ -34,16 +36,24 @@ public class Task {
     @Column(name = "completion_date")
     private LocalDateTime completionDate;
 
-    //ToDo продолжить созданние полей и дописать ТаскСтатус
+    @Column(name = "status")
+    private TaskStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "creator_id", nullable = false)
+    private User creator;
 
-    /*
-    status_id INT REFERENCES task_statues(id),
-    creator_id INT REFERENCES users(id),
-    executor_id INT REFERENCES users(id),
-    parent_task_id INT REFERENCES tasks(id),
-    department_id INT REFERENCES departments(id),
-    CONSTRAINT fk_parent_task FOREIGN KEY (parent_task_id) REFERENCES tasks(id) ON DELETE CASCADE
-     */
+    @ManyToOne
+    @JoinColumn(name = "executor_id")
+    private User executor;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_task_id")
+    private Task parentTask;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department departments;
+
 
 }
