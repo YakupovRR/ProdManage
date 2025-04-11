@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ru.rostec.prodmanage.department.Department;
+import ru.rostec.prodmanage.product.Product;
 import ru.rostec.prodmanage.user.User;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
@@ -29,7 +31,7 @@ public class Task {
     private String description;
 
     @Column(name = "start_data")
-    private LocalDateTime startData;
+    private LocalDateTime startDate;
 
     private LocalDateTime deadline;
 
@@ -55,5 +57,10 @@ public class Task {
     @JoinColumn(name = "department_id")
     private Department departments;
 
-
+    @ManyToMany
+    @JoinTable(
+            name = "task_products",
+    joinColumns = @JoinColumn(name = "task_id"),
+    inverseJoinColumns = @JoinColumn(name = "product_id")    )
+    private Set<Product> products;
 }

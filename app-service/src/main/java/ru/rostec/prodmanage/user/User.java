@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ru.rostec.prodmanage.department.Department;
-import ru.rostec.prodmanage.task.Task;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")

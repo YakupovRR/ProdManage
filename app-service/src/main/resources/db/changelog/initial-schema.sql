@@ -24,7 +24,7 @@ CREATE TABLE product_relations
 (
     parent_product_id INT REFERENCES products(id),
     child_product_id  INT REFERENCES products(id),
-    PRIMARY KEY (parent_product_id, child_product_id)
+    quantity INT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE tasks
