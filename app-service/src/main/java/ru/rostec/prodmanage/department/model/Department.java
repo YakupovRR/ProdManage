@@ -1,4 +1,4 @@
-package ru.rostec.prodmanage.department;
+package ru.rostec.prodmanage.department.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,9 +1,9 @@
-package ru.rostec.prodmanage.user;
+package ru.rostec.prodmanage.user.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import ru.rostec.prodmanage.department.Department;
+import ru.rostec.prodmanage.department.model.Department;
 
 
 @Entity

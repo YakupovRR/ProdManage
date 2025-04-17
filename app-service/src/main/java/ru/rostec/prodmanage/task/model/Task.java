@@ -1,11 +1,11 @@
-package ru.rostec.prodmanage.task;
+package ru.rostec.prodmanage.task.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import ru.rostec.prodmanage.department.Department;
-import ru.rostec.prodmanage.product.Product;
-import ru.rostec.prodmanage.user.User;
+import ru.rostec.prodmanage.department.model.Department;
+import ru.rostec.prodmanage.product.model.Product;
+import ru.rostec.prodmanage.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Set;

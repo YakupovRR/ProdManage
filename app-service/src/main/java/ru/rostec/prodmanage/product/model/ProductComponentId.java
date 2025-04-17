@@ -1,4 +1,4 @@
-package ru.rostec.prodmanage.product;
+package ru.rostec.prodmanage.product.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

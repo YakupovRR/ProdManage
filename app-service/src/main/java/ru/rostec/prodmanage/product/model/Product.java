@@ -1,10 +1,10 @@
-package ru.rostec.prodmanage.product;
+package ru.rostec.prodmanage.product.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import ru.rostec.prodmanage.department.Department;
-import ru.rostec.prodmanage.task.Task;
+import ru.rostec.prodmanage.department.model.Department;
+import ru.rostec.prodmanage.task.model.Task;
 
 import java.util.Set;
 

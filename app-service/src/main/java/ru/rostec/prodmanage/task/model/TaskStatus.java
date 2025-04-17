@@ -1,4 +1,4 @@
-package ru.rostec.prodmanage.task;
+package ru.rostec.prodmanage.task.model;
 
 public enum TaskStatus {
     IN_PROGRESS("В работе"),
