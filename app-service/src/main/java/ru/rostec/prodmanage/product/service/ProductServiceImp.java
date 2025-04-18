@@ -9,6 +9,7 @@ import ru.rostec.prodmanage.product.ProductRepository;
 import ru.rostec.prodmanage.product.model.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +18,8 @@ public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public Product getProductById(Long id) {
-
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Продукт с id " + id + " не найден"));
+    public Optional<Product> getProductById(Long id) {
+            return productRepository.findById(id);
     }
 
     @Override

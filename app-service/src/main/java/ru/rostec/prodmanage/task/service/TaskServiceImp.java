@@ -1,0 +1,86 @@
+package ru.rostec.prodmanage.task.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import ru.rostec.prodmanage.department.model.Department;
+import ru.rostec.prodmanage.task.TaskRepository;
+import ru.rostec.prodmanage.task.model.Task;
+import ru.rostec.prodmanage.user.model.User;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class TaskServiceImp implements TaskService {
+
+
+    private final TaskRepository taskRepository;
+
+    @Override
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
+    }
+
+    @Override
+    public List<Task> searchTasksByName(String name) {
+        return taskRepository.findTaskByName(name);
+    }
+
+    @Override
+    public List<Task> findTaskByStartDate(LocalDateTime startDate) {
+        return taskRepository.findTaskByStartDate(startDate);
+    }
+
+    @Override
+    public List<Task> findTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
+        return taskRepository.findTaskByStartDateBetween(startDateAfter, startDateBefore);
+    }
+
+    @Override
+    public List<Task> findTasksByProduct(Long productId) {
+        return taskRepository.findTasksByProduct(productId);
+    }
+
+    @Override
+    public List<Task> findTaskByDeadline(LocalDateTime deadline) {
+        return taskRepository.findTaskByDeadline(deadline);
+    }
+
+    @Override
+    public List<Task> findByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
+        return taskRepository.findByDeadlineBetween(startDateAfter, startDateBefore);
+    }
+
+    @Override
+    public List<Task> findTaskByDepartment(Department department) {
+        return taskRepository.findTaskByDepartment(department.getId());
+    }
+
+    @Override
+    public List<Task> findTaskByCreator(User user) {
+        return taskRepository.findTaskByCreator(user);
+    }
+
+    @Override
+    public List<Task> findTaskByExecutor(User user) {
+        return taskRepository.findTaskByExecutor(user);
+    }
+
+    @Override
+    public List<Task> findTaskByParentTask(Task parentTask, Pageable pageable) {
+        return taskRepository.findTaskByParentTask(parentTask, pageable);
+    }
+
+    @Override
+    public Task createTask(Task task) {
+        return taskRepository.save(task);
+    }
+
+    @Override
+    public void deleteTaskById(Long id) {
+        taskRepository.deleteById(id);
+    }
+}

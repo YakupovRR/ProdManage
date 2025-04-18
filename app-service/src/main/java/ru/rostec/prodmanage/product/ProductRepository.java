@@ -29,9 +29,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p JOIN p.tasks t WHERE t.name = :taskName")
     List<Product> searchProductByTaskName(@Param("taskName") String taskName);
 
+    //Поиск продуктов по id задачи
     @Query("SELECT p FROM Product p JOIN p.tasks t WHERE t.id = :taskId")
     List<Product> searchProductByTaskId(@Param("taskId") Long taskId);
 
     Page<Product> findAll(Pageable pageable);
-
 }

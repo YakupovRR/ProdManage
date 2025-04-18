@@ -6,23 +6,23 @@ import ru.rostec.prodmanage.department.DepartmentRepository;
 import ru.rostec.prodmanage.department.model.Department;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DepartmentServiceImp implements DepartmentService {
 
-    private DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
-    public List<Department> getAllDepartment() {
+    public List<Department> getAllDepartments() {
         return departmentRepository.findAll();
     }
 
 
     @Override
-    public Department getDepartmentById(Long id) {
-        return departmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Цех не найден"));
+    public Optional<Department> getDepartmentById(Long id) {
+        return departmentRepository.findById(id);
     }
 
     @Override

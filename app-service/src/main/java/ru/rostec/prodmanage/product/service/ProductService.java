@@ -7,10 +7,11 @@ import ru.rostec.prodmanage.department.model.Department;
 import ru.rostec.prodmanage.product.model.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
-    Product getProductById(Long id);
+    Optional<Product> getProductById(Long id);
 
     List<Product> findByName(String name);
 
