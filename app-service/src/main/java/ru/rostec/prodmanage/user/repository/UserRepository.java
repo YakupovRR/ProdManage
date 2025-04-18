@@ -1,7 +1,6 @@
-package ru.rostec.prodmanage.user;
+package ru.rostec.prodmanage.user.repository;
 
 import feign.Param;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

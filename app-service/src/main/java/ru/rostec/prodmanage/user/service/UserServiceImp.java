@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.rostec.prodmanage.department.model.Department;
-import ru.rostec.prodmanage.user.UserRepository;
+import ru.rostec.prodmanage.user.repository.UserRepository;
 import ru.rostec.prodmanage.user.model.User;
 
 import java.util.List;

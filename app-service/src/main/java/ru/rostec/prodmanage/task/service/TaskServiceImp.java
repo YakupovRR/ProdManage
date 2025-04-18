@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.rostec.prodmanage.department.model.Department;
-import ru.rostec.prodmanage.task.TaskRepository;
+import ru.rostec.prodmanage.task.repository.TaskRepository;
 import ru.rostec.prodmanage.task.model.Task;
 import ru.rostec.prodmanage.user.model.User;
 

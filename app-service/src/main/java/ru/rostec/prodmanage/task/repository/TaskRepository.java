@@ -1,12 +1,10 @@
-package ru.rostec.prodmanage.task;
+package ru.rostec.prodmanage.task.repository;
 
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.rostec.prodmanage.department.model.Department;
 import ru.rostec.prodmanage.task.model.Task;
 import ru.rostec.prodmanage.user.model.User;
 

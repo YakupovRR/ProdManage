@@ -1,4 +1,4 @@
-package ru.rostec.prodmanage.product;
+package ru.rostec.prodmanage.product.repository;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
