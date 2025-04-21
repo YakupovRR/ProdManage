@@ -3,10 +3,7 @@ package ru.rostec.prodmanage.department.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.rostec.prodmanage.department.model.Department;
 import ru.rostec.prodmanage.department.service.DepartmentService;
 
@@ -33,5 +30,20 @@ public class DepartmentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search")
+    public List<Department> searchDepartment(@RequestParam String name) {
+        return departmentService.searchDepartmentsByName(name);
+    }
+
+    @PostMapping
+    public Department createDepartment(@RequestBody Department department) {
+        return departmentService.createDepartment(department);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
+        departmentService.deleteDepartmentById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

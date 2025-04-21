@@ -13,6 +13,8 @@ public interface ProductService {
 
     Optional<Product> getProductById(Long id);
 
+    Page<Product> getAllProducts(Pageable pageable);
+
     List<Product> findByName(String name);
 
     List<Product> searchProductsByName(String name);
@@ -21,11 +23,6 @@ public interface ProductService {
 
     void deleteProductById(Long id);
 
-    Page<Product> getAllProducts(Pageable pageable);
-
-    //Ахтунг! Только для админов!!!
-    List<Product> getAllProducts();
-
     List<Product> findByDepartment(Department department);
 
     List<Product> findByType(String type);
@@ -33,5 +30,7 @@ public interface ProductService {
     List<Product> searchProductByTaskId(Long id);
 
 
+    //Ахтунг! Только для админов!!!
+    List<Product> getAllProducts();
 
 }
