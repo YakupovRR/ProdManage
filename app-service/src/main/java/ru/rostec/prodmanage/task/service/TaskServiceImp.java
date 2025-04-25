@@ -30,47 +30,47 @@ public class TaskServiceImp implements TaskService {
     }
 
     @Override
-    public List<Task> findTaskByStartDate(LocalDateTime startDate) {
+    public List<Task> searchTaskByStartDate(LocalDateTime startDate) {
         return taskRepository.findTaskByStartDate(startDate);
     }
 
     @Override
-    public List<Task> findTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
+    public List<Task> searchTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
         return taskRepository.findTaskByStartDateBetween(startDateAfter, startDateBefore);
     }
 
     @Override
-    public List<Task> findTasksByProduct(Long productId) {
+    public List<Task> searchTasksByProduct(Long productId) {
         return taskRepository.findTasksByProduct(productId);
     }
 
     @Override
-    public List<Task> findTaskByDeadline(LocalDateTime deadline) {
+    public List<Task> searchTaskByDeadline(LocalDateTime deadline) {
         return taskRepository.findTaskByDeadline(deadline);
     }
 
     @Override
-    public List<Task> findByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
+    public List<Task> searchByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
         return taskRepository.findByDeadlineBetween(startDateAfter, startDateBefore);
     }
 
     @Override
-    public List<Task> findTaskByDepartment(Department department) {
+    public List<Task> searchTaskByDepartment(Department department) {
         return taskRepository.findTaskByDepartment(department.getId());
     }
 
     @Override
-    public List<Task> findTaskByCreator(User user) {
+    public List<Task> searchTaskByCreator(User user) {
         return taskRepository.findTaskByCreator(user);
     }
 
     @Override
-    public List<Task> findTaskByExecutor(User user) {
+    public List<Task> searchTaskByExecutor(User user) {
         return taskRepository.findTaskByExecutor(user);
     }
 
     @Override
-    public List<Task> findTaskByParentTask(Task parentTask, Pageable pageable) {
+    public List<Task> searchTaskByParentTask(Task parentTask, Pageable pageable) {
         return taskRepository.findTaskByParentTask(parentTask, pageable);
     }
 

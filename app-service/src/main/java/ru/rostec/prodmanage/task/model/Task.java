@@ -57,6 +57,7 @@ public class Task {
     @JoinColumn(name = "department_id")
     private Department departments;
 
+
     @ManyToMany
     @JoinTable(
             name = "task_products",

@@ -1,7 +1,6 @@
 package ru.rostec.prodmanage.task.service;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import ru.rostec.prodmanage.department.model.Department;
 import ru.rostec.prodmanage.task.model.Task;
 import ru.rostec.prodmanage.user.model.User;
@@ -16,24 +15,23 @@ public interface TaskService {
 
     List<Task> searchTasksByName(String name);
 
-    List<Task> findTaskByStartDate(LocalDateTime startDate);
+    List<Task> searchTaskByStartDate(LocalDateTime startDate);
 
-    List<Task> findTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore);
+    List<Task> searchTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore);
 
-    List<Task> findTasksByProduct(Long productId);
+    List<Task> searchTaskByDeadline(LocalDateTime deadline);
 
-    List<Task> findTaskByDeadline(LocalDateTime deadline);
+    List<Task> searchByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore);
 
-    List<Task> findByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore);
+    List<Task> searchTasksByProduct(Long productId);
 
+    List<Task> searchTaskByDepartment(Department department);
 
-    List<Task> findTaskByDepartment(Department department);
+    List<Task> searchTaskByCreator(User user);
 
-    List<Task> findTaskByCreator(User user);
+    List<Task> searchTaskByExecutor(User user);
 
-    List<Task> findTaskByExecutor(User user);
-
-    List<Task> findTaskByParentTask(Task parentTask, Pageable pageable);
+    List<Task> searchTaskByParentTask(Task parentTask, Pageable pageable);
 
     Task createTask(Task task);
 

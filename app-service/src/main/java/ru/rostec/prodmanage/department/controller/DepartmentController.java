@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.rostec.prodmanage.department.model.Department;
 import ru.rostec.prodmanage.department.service.DepartmentService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,6 @@ public class DepartmentController {
         return departmentService.getAllDepartments();
     }
 
-    //Почему через ResponseEntity???
-
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
         return departmentService.getDepartmentById(id)
@@ -36,8 +35,10 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public Department createDepartment(@RequestBody Department department) {
-        return departmentService.createDepartment(department);
+    public ResponseEntity<Department>createDepartment(@RequestBody Department department) {
+        Department created = departmentService.createDepartment(department);
+        URI location = URI.create("/api/department/" + created.getId());
+        return ResponseEntity.created(location).body(created);
     }
 
     @DeleteMapping
