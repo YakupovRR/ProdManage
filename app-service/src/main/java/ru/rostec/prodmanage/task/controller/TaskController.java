@@ -2,6 +2,7 @@ package ru.rostec.prodmanage.task.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rostec.prodmanage.department.model.Department;
@@ -20,8 +21,8 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @GetMapping("{id}")
-    public ResponseEntity<Task> getTaskById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -60,12 +61,12 @@ public class TaskController {
     }
 
 
-    @GetMapping("by-product")
+    @GetMapping("/by-product")
     public ResponseEntity<List<Task>> searchTasksByProduct(@RequestParam Long productId) {
         return ResponseEntity.ok(taskService.searchTasksByProduct(productId));
     }
 
-    @GetMapping("by-department")
+    @GetMapping("/by-department")
     public ResponseEntity<List<Task>> searchTaskByDepartment(@RequestParam Long id) {
         Department department = new Department();
         department.setId(id);
@@ -79,16 +80,18 @@ public class TaskController {
         return ResponseEntity.ok(taskService.searchTaskByCreator(user));
     }
 
-    @GetMapping("by-executor")
+    @GetMapping("/by-executor")
     public ResponseEntity<List<Task>> searchTaskByExecutor(@RequestParam Long id) {
         User user = new User();
         user.setId(id);
         return ResponseEntity.ok(taskService.searchTaskByExecutor(user));
     }
 
-    @GetMapping("by-parent-task")
-    public ResponseEntity<List<Task>> searchTaskByParentTask(@RequestParam Long id,
-                                                             @RequestParam Pageable pageable)  {
+    @GetMapping("/by-parent-task")
+    public ResponseEntity<List<Task>> searchTaskByParentTask(
+            @PageableDefault(page = 0, size = 20)
+            @RequestParam Long id,
+            @RequestParam Pageable pageable) {
         Task task = new Task();
         task.setId(id);
         return ResponseEntity.ok(taskService.searchTaskByParentTask(task, pageable));
@@ -97,8 +100,15 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task created = taskService.createTask(task);
-        URI location = URI.create("/api/task/"+created.getId());
+        URI location = URI.create("/api/task/" + created.getId());
         return ResponseEntity.created(location).body(created);
+    }
+
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteTaskById(@PathVariable Long id) {
+        taskService.deleteTaskById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

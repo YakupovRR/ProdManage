@@ -3,6 +3,7 @@ package ru.rostec.prodmanage.product.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<Product> getAllProducts(Pageable pageable) {
+    public Page<Product> getAllProducts(@PageableDefault(page = 0, size = 20) Pageable pageable) {
         return productService.getAllProducts(pageable);
     }
 

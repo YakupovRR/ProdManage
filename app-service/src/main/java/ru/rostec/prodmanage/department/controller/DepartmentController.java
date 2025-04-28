@@ -30,12 +30,12 @@ public class DepartmentController {
     }
 
     @GetMapping("/search")
-    public List<Department> searchDepartment(@RequestParam String name) {
-        return departmentService.searchDepartmentsByName(name);
+    public ResponseEntity<List<Department>> searchDepartment(@RequestParam String name) {
+        return ResponseEntity.ok(departmentService.searchDepartmentsByName(name));
     }
 
     @PostMapping
-    public ResponseEntity<Department>createDepartment(@RequestBody Department department) {
+    public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
         Department created = departmentService.createDepartment(department);
         URI location = URI.create("/api/department/" + created.getId());
         return ResponseEntity.created(location).body(created);
