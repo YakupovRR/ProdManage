@@ -18,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class Task {
 
     @Id

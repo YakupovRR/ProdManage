@@ -1,5 +1,6 @@
 package ru.rostec.prodmanage.task.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -76,11 +77,13 @@ public class TaskServiceImp implements TaskService {
 
     @Override
     public Task createTask(Task task) {
+        if (task == null) throw new IllegalArgumentException("Task не может быть null");
         return taskRepository.save(task);
     }
 
     @Override
     public void deleteTaskById(Long id) {
+        if(!taskRepository.existsById(id)) throw new EntityNotFoundException("Не найдена задача с id " + id);
         taskRepository.deleteById(id);
     }
 }

@@ -35,4 +35,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     //Поиск задач, которые связаны с продуктом
     @Query("SELECT t FROM Task t JOIN t.products p WHERE p.id = :productId")
     List<Task> findTasksByProduct(@Param("productId") Long productId);
+
+
 }

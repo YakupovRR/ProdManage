@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok(userService.searchUserByName(name));
     }
 
-    @GetMapping("/by-supevisor")
+    @GetMapping("/by-supervisor")
     public ResponseEntity<List<User>> findUsersBySupervisor(@RequestParam Long id) {
         User supervisor = new User();
         supervisor.setId(id);
@@ -49,7 +49,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User created = new User();
+        User created = userService.createUser(user);
         URI location = URI.create("api/task" + created.getId());
         return ResponseEntity.created(location).body(created);
     }

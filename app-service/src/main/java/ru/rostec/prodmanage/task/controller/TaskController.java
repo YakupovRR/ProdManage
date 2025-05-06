@@ -3,6 +3,7 @@ package ru.rostec.prodmanage.task.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.rostec.prodmanage.department.model.Department;
@@ -37,19 +38,25 @@ public class TaskController {
     // @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate) {
 
     @GetMapping("/by-start-day")
-    public ResponseEntity<List<Task>> searchTaskByStartDate(@RequestParam LocalDateTime startDate) {
+    public ResponseEntity<List<Task>> searchTaskByStartDate(@RequestParam
+                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                            LocalDateTime startDate) {
         return ResponseEntity.ok(taskService.searchTaskByStartDate(startDate));
     }
 
     @GetMapping("/between-start-dates")
     public ResponseEntity<List<Task>> searchTaskByStartDateBetween(
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @RequestParam LocalDateTime startDateAfter,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             @RequestParam LocalDateTime startDateBefore) {
         return ResponseEntity.ok(taskService.searchTaskByStartDateBetween(startDateBefore, startDateAfter));
     }
 
     @GetMapping("/by-deadline")
-    public ResponseEntity<List<Task>> searchTaskByDeadline(@RequestParam LocalDateTime deadline) {
+    public ResponseEntity<List<Task>> searchTaskByDeadline(@RequestParam
+                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                           LocalDateTime deadline) {
         return ResponseEntity.ok(taskService.searchTaskByDeadline(deadline));
     }
 
@@ -73,7 +80,7 @@ public class TaskController {
         return ResponseEntity.ok(taskService.searchTaskByDepartment(department));
     }
 
-    @GetMapping("by-creator")
+    @GetMapping("/by-creator")
     public ResponseEntity<List<Task>> searchTaskByCreator(@RequestParam Long id) {
         User user = new User();
         user.setId(id);
@@ -89,9 +96,8 @@ public class TaskController {
 
     @GetMapping("/by-parent-task")
     public ResponseEntity<List<Task>> searchTaskByParentTask(
-            @PageableDefault(page = 0, size = 20)
             @RequestParam Long id,
-            @RequestParam Pageable pageable) {
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
         Task task = new Task();
         task.setId(id);
         return ResponseEntity.ok(taskService.searchTaskByParentTask(task, pageable));
