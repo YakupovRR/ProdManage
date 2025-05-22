@@ -1,13 +1,14 @@
 package ru.rostec.prodmanage.task.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.rostec.prodmanage.department.model.Department;
+import ru.rostec.prodmanage.department.repository.DepartmentRepository;
 import ru.rostec.prodmanage.task.repository.TaskRepository;
 import ru.rostec.prodmanage.task.model.Task;
 import ru.rostec.prodmanage.user.model.User;
+import ru.rostec.prodmanage.utils.CheckUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,14 +20,18 @@ public class TaskServiceImp implements TaskService {
 
 
     private final TaskRepository taskRepository;
+    private final DepartmentRepository departmentRepository;
+    private final CheckUtils check;
 
     @Override
     public Optional<Task> getTaskById(Long id) {
+        check.correctId(id);
         return taskRepository.findById(id);
     }
 
     @Override
     public List<Task> searchTasksByName(String name) {
+        check.correctName(name);
         return taskRepository.findTaskByName(name);
     }
 
@@ -37,11 +42,14 @@ public class TaskServiceImp implements TaskService {
 
     @Override
     public List<Task> searchTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
+        check.validateDateOrder(startDateAfter, startDateBefore);
         return taskRepository.findTaskByStartDateBetween(startDateAfter, startDateBefore);
     }
 
+
     @Override
     public List<Task> searchTasksByProduct(Long productId) {
+        check.productById(productId);
         return taskRepository.findTasksByProduct(productId);
     }
 
@@ -52,38 +60,44 @@ public class TaskServiceImp implements TaskService {
 
     @Override
     public List<Task> searchByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore) {
+        check.validateDateOrder(startDateAfter, startDateBefore);
         return taskRepository.findByDeadlineBetween(startDateAfter, startDateBefore);
     }
 
     @Override
     public List<Task> searchTaskByDepartment(Department department) {
+        check.departmentIsExists(department);
         return taskRepository.findTaskByDepartment(department.getId());
     }
 
     @Override
     public List<Task> searchTaskByCreator(User user) {
+        check.userNotNull(user);
         return taskRepository.findTaskByCreator(user);
     }
 
     @Override
     public List<Task> searchTaskByExecutor(User user) {
+        check.userNotNull(user);
         return taskRepository.findTaskByExecutor(user);
     }
 
     @Override
     public List<Task> searchTaskByParentTask(Task parentTask, Pageable pageable) {
+        check.taskNotNull(parentTask);
         return taskRepository.findTaskByParentTask(parentTask, pageable);
     }
 
     @Override
     public Task createTask(Task task) {
-        if (task == null) throw new IllegalArgumentException("Task не может быть null");
+        check.taskNotNull(task);
         return taskRepository.save(task);
     }
 
     @Override
     public void deleteTaskById(Long id) {
-        if(!taskRepository.existsById(id)) throw new EntityNotFoundException("Не найдена задача с id " + id);
+        check.taskById(id);
         taskRepository.deleteById(id);
     }
+
 }

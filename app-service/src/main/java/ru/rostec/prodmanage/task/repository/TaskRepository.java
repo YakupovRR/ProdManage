@@ -19,7 +19,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findTaskByStartDateBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore);
 
-    List<Task> findTaskByDeadline(LocalDateTime deadline);
+        List<Task> findTaskByDeadline(LocalDateTime deadline);
 
     List<Task> findByDeadlineBetween(LocalDateTime startDateAfter, LocalDateTime startDateBefore);
 

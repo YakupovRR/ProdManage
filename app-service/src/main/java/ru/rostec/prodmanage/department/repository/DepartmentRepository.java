@@ -10,4 +10,5 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     List<Department> searchDepartmentByName(@NonNull String name);
 
+    boolean existsById(@NonNull Long id);
 }

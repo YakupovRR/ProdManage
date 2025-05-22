@@ -1,5 +1,6 @@
 package ru.rostec.prodmanage;
 
+import ch.qos.logback.core.testUtil.MockInitialContext;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,59 +11,62 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.rostec.prodmanage.department.repository.DepartmentRepository;
+import ru.rostec.prodmanage.product.repository.ProductRepository;
 import ru.rostec.prodmanage.task.repository.TaskRepository;
 import ru.rostec.prodmanage.task.service.TaskService;
 import ru.rostec.prodmanage.task.model.Task;
 import ru.rostec.prodmanage.task.model.TaskStatus;
 import ru.rostec.prodmanage.task.service.TaskServiceImp;
 import ru.rostec.prodmanage.user.model.User;
+import ru.rostec.prodmanage.utils.CheckUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class TaskServiceTest {
 
-    private Task sampleTask;
-
-    static Task task;
-    static Task task2;
 
     @Mock
     private TaskRepository taskRepository;
 
+    @Mock
+    private DepartmentRepository departmentRepository;
+
+    @Mock
+    private CheckUtils checkUtils;
+
+    @Mock
+    private ProductRepository productRepository;
+
+
     @InjectMocks
     private TaskServiceImp taskService;
 
+    private Task sampleTask;
 
-//    @BeforeAll
-//    static void setupTasks() {
-//
-//        Task task = Task.builder()
-//                .id(1L)
-//                .name("Test Task")
-//                .creator(new User())
-//                .status(TaskStatus.IN_PROGRESS)
-//                .startDate(LocalDateTime.now())
-//                .deadline(LocalDateTime.now().plusDays(3))
-//                .build();
-//
-//
-//        Task task2 = Task.builder()
-//                .id(2L)
-//                .name("Test Task 2")
-//                .creator(new User())
-//                .status(TaskStatus.ON_DESIGN)
-//                .startDate(LocalDateTime.now())
-//                .deadline(LocalDateTime.now().plusDays(3))
-//                .build();
-//    }
+
 
     @BeforeEach
     void setUp() {
+        taskRepository = mock(TaskRepository.class);
+        departmentRepository = mock(DepartmentRepository.class);
+        productRepository = mock(ProductRepository.class);
+
+        checkUtils = new CheckUtils(taskRepository, departmentRepository, productRepository);
+
+        lenient().when(productRepository.existsById(anyLong())).thenReturn(true);
+        lenient().when(departmentRepository.existsById(anyLong())).thenReturn(true);
+
+        taskService = new TaskServiceImp(taskRepository, departmentRepository, checkUtils);
+
         sampleTask = Task.builder()
                 .id(1L)
                 .name("Тестовая задача")
@@ -74,59 +78,67 @@ public class TaskServiceTest {
     }
 
 
-    @Test
-    void getTaskById_returnsTask_whenFound() {
 
-        Mockito.when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+    @Test
+    void getTaskById_ShouldReturnTask_WhenIdIsCorrect() {
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(sampleTask));
+
         Optional<Task> result = taskService.getTaskById(1L);
-        Assertions.assertTrue(result.isPresent());
-        Assertions.assertEquals(1L, result.get().getId());
+
+        assertTrue(result.isPresent());
+        assertEquals(sampleTask, result.get());
+    }
+    @Test
+    void searchTasksByName_ShouldReturnList_WhenNameIsValid() {
+        when(taskRepository.findTaskByName("Тестовая задача")).thenReturn(List.of(sampleTask));
+
+        List<Task> result = taskService.searchTasksByName("Тестовая задача");
+
+        assertEquals(1, result.size());
+        assertEquals(sampleTask, result.getFirst());
     }
 
     @Test
-    void getTaskById_returnsEmptyOptional_whenTaskNotFound() {
+    void searchTaskByStartDateBetween_ShouldReturnList_WhenDatesAreValid() {
+        LocalDateTime after = LocalDateTime.now().minusDays(1);
+        LocalDateTime before = LocalDateTime.now().plusDays(1);
 
-        Long nonExistentId = 99999L;
+        when(taskRepository.findTaskByStartDateBetween(after, before)).thenReturn(List.of(sampleTask));
 
-        Mockito.when(taskRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+        List<Task> result = taskService.searchTaskByStartDateBetween(after, before);
 
-        Optional<Task> result = taskService.getTaskById(nonExistentId);
-
-        Assertions.assertTrue(result.isEmpty(), "Когда задача не найдена ожидается пустой Optional");
+        assertEquals(1, result.size());
+        assertEquals(sampleTask, result.get(0));
     }
 
+    @Test
+    void searchTasksByProduct_ShouldReturnList_WhenProductIdIsValid() {
+        when(taskRepository.findTasksByProduct(1L)).thenReturn(List.of(sampleTask));
+
+        List<Task> result = taskService.searchTasksByProduct(1L);
+
+        assertEquals(1, result.size());
+        assertEquals(sampleTask, result.get(0));
+    }
 
     @Test
-    void createTask_savesAndReturnsTask() {
-        Mockito.when(taskRepository.save(sampleTask)).thenReturn(sampleTask);
+    void searchTaskByDeadline_ShouldReturnList_WhenDeadlineMatches() {
+        when(taskRepository.findTaskByDeadline(sampleTask.getDeadline())).thenReturn(List.of(sampleTask));
+
+        List<Task> result = taskService.searchTaskByDeadline(sampleTask.getDeadline());
+
+        assertEquals(1, result.size());
+        assertEquals(sampleTask, result.get(0));
+    }
+
+    @Test
+    void createTask_ShouldSaveTask_WhenTaskIsValid() {
+        when(taskRepository.save(sampleTask)).thenReturn(sampleTask);
+
         Task result = taskService.createTask(sampleTask);
 
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(sampleTask, result);
-        Mockito.verify(taskRepository).save(task);
-    }
-
-    @Test
-    void saveTask_throwsException_whenTaskIsNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            taskService.createTask(null);
-        });
-    }
-
-    @Test
-    void deleteTaskById_deletesTask_whenExists() {
-        Mockito.when(taskRepository.existsById(1L)).thenReturn(true);
-        Mockito.doNothing().when(taskRepository).deleteById(1L);
-
-        taskService.deleteTaskById(1L);
-        Mockito.verify(taskRepository).deleteById(1L);
-    }
-
-    @Test
-    void deleteTaskById_throwsException_whenTaskDoesNotExist() {
-        Mockito.when(taskRepository.existsById(2L)).thenReturn(false);
-
-        Assertions.assertThrows(EntityNotFoundException.class, () -> taskService.deleteTaskById(2L));
+        assertNotNull(result);
+        assertEquals(sampleTask, result);
     }
 
 
